@@ -20,7 +20,7 @@ The reference fasta must be indexed with `bwa-mem2 index $reference` and `samtoo
 
 TYpeSTeR can be used to find, filter and genotype Y chromosome Short Tandem Repeats on a set of WGS Illumina samples.
 
-It depends on `TRF` in order to get the putative Y STR regions in the Y chromosome reference. `TRF` is available through conda `conda install -c bioconda trf`, [Benson, 1999](https://github.com/Benson-Genomics-Lab/TRF)).
+It depends on `TRF` in order to get the putative Y STR regions in the Y chromosome reference. `TRF` is available through conda `conda install -c bioconda trf`, ([Benson, 1999](https://github.com/Benson-Genomics-Lab/TRF)).
 
 Whereas to genotype the samples in the newly found regions it depends on [HipSTR](https://hipstr-tool.github.io/HipSTR/) ([Willems et al, 2017](https://www.nature.com/articles/nmeth.4267)). Which you can install following the [installation instructions](https://github.com/HipSTR-Tool/HipSTR#installation).
 
@@ -45,15 +45,14 @@ Then it will filter these regions removing dinucleotides and repeats with motif 
 
 The HipSTR maximum flanking indel parameter (`--max-flank-indel`) is set to 1 as it can be eventually filtered downstream and you might be genotyping not so closely related species. Also, the `--min-reads` parameter is the same as your number of samples. This is a very relaxed filtering but again, it's better to eventually filter results downstream.
 
-Run `./typester.sh -h` to get additional details on usage.
-
 
 `typester.sh` will output:
 
-1. the raw trf data file which will be named as `${Y_ref}.2.5.7.80.10.80.${max_motif}.dat`
+1. the raw `TRF` data file which will be named as `${Y_ref}.2.5.7.80.10.80.${max_motif}.dat`
 2. the filtered STR regions named `${Y_name}_${max_motif}_${max_str}_filtered_STR.bed`
 3. The HipSTR genotypes and log in `${outprefix}.vcf.gz` and `.log` . `${outprefix}` can be set with `-o` (Default: Y_STRs)
 
+Run `./typester.sh -h` to get additional details on usage.
 
 ### 3. Analyze results
 
@@ -68,7 +67,7 @@ This script is based on the same `TRF` command as before and you can use the sam
 `find_homology.sh species_a_Y.fa [...] species_n_Y.fa`
 
 The script will produce three files:
-1. `all_Y_strs.fa`: the fasta files of the filtered STRs found in your references. The sequences will be named as filename+ an increasing integer based on their postion (i.e. given an input called Hsap_Y.fa the regions will ba named Hsap_Y_1,2...n). Further, each sequence will have 200 bp additional base paires in the flanking regions (you can change this parameter with `-f`).
+1. `all_Y_strs.fa`: the fasta files of the filtered STRs found in your references. The sequences will be named as filename+an increasing integer based on their postion (i.e. given an input called Hsap_Y.fa the regions will be named Hsap_Y_1,2...n). Further, each sequence will have 200 bp additional base paires in the flanking regions (you can change this parameter with `-f`).
 2. `regions_metadata.txt`: file with 5 columns: reference_id, start, end, length, name
 3. `blast_all_v_all_Y_str.csv`: blast results of the all vs all search (outfmt 6).
 
