@@ -18,7 +18,7 @@ usage() {
   echo "[ -s samples ]          file with bam file paths"
   echo "[ -t HipSTR ]           path to compiled HipSTR (optional if in \$PATH)"
   echo "[ -e exclude ]          BED of regions to exclude (optional)"
-  echo "[ -o outprefix ]        prefix of output files (optional)"
+  echo "[ -o outprefix ]        prefix of output files (optional, default: Y_STRs)"
   echo "[ -m max_motif ]        maximum motif length (default: 6)"
   echo "[ -M max_len ]          maximum STR length (default: 100)"
   echo "[ -n no_geno ]          skip genotyping with HipSTR"
@@ -129,13 +129,13 @@ filtered_bed=${Y_name}_${max_motif}_${max_len}_filtered_STR.bed
 
 # Filter regions, if exclude is given remove STR overlapping excluded regions
 if [ ! $exclude ]; then
-  sed '1,15d' $(basename ${Y_ref})*.dat | \
+  sed '1,15d' $(basename ${Y_ref}).2.5.7.80.10.80.${max_motif}.dat | \
   awk -v Y_id="$Y_id" -v max_motif="$max_motif" -v max_len="$max_len" \
    'BEGIN{OFS="\t"} {if ($3 > 2 && $3 <= max_motif && $2-$1 <= max_len)  \
    {print Y_id, $1, $2, $3, $4}}' | \
   awk '!seen[$3]++' > $filtered_bed
 else
-  sed '1,15d' $(basename ${Y_ref})*.dat | \
+  sed '1,15d' $(basename ${Y_ref}).2.5.7.80.10.80.${max_motif}.dat | \
   awk -v Y_id="$Y_id" -v max_motif="$max_motif" -v max_len="$max_len" \
    'BEGIN{OFS="\t"} {if ($3 > 2 && $3 <= max_motif && $2-$1 <= max_len)  \
    {print Y_id, $1, $2, $3, $4}}' | \

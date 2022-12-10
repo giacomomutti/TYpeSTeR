@@ -10,9 +10,9 @@ library(optparse)
 
 option_list = list(
   make_option(c("-b", "--blast"), type="character", default="blast_all_v_all_Y_str.csv",
-              help="blast output from find_homology.sh", dest = "blast"),
+              help="blast output from find_homology.sh. Deefault blast_all_v_all_Y_str.csv", dest = "blast"),
   make_option(c("-r", "--regions"), type="character", default="regions_metadata.txt",
-              help="regions file output from find_homology.sh", dest = "regions"),
+              help="regions file output from find_homology.sh. Default regions_metadata.txt", dest = "regions"),
   make_option(c("-f","--flank"), type="integer", default=200,
               help="flanking regions used in find_homology.sh Default 200", dest = "flank"),
   make_option(c("-c","--cov"), type="double", default=.65,
