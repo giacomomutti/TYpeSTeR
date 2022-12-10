@@ -1,7 +1,15 @@
+data/test
+data/mnt
+Panu*
+Y_STR*
+test*
+vcf
+blast*
+all*
+regions_metadata.txt
 old
-plots
 .Rproj.user
-.Rproj
+*.Rproj
 .Rhistory
 .RData
 .Ruserdata
