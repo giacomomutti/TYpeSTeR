@@ -1,10 +1,10 @@
 # TYpeSTeR
 
-### 1. Map samples (optional)
+### Map samples (optional)
 
-If you don't already have the BAMs you can reproduce our analysis by running the snakemake pipeline in the pipeline folder.
+If you don't already have the mapped samples (in BAM format) you can reproduce our analysis by running the snakemake pipeline in the `pipeline` folder.
 
-You'll need the paired fastq files, a config file where to specify different directories and the reference genome and a json file where each sample is associated to a list of runs.
+You'll need the paired fastq files, a config file where to specify different output directories, the reference genome and a json file where each sample is associated to a list of runs.
 
 Check the example files in order to have an idea of what you may need.
 
@@ -16,27 +16,44 @@ The dependencies are:
 
 The reference fasta must be indexed with `bwa-mem2 index $reference` and `samtools faidx $reference`.
 
+### 1. Installation
+
+First clone the github repository.
+
+```
+git clone https://github.com/giacomomutti/TYpeSTeR
+cd TYpeSTeR
+
+```
+
+It depends on `TRF` in order to identify the putative Y STR regions in the Y chromosome reference ([Benson, 1999](https://github.com/Benson-Genomics-Lab/TRF)). `TRF` is available through conda:
+
+```
+conda install -c bioconda trf
+```
+
+[HipSTR](https://hipstr-tool.github.io/HipSTR/) is used to genotype the samples in the newly found regions ([Willems et al, 2017](https://www.nature.com/articles/nmeth.4267)). You can install this tool following the [installation instructions](https://github.com/HipSTR-Tool/HipSTR#installation).
+
 ### 2. Usage
 
-TYpeSTeR can be used to find, filter and genotype Y chromosome Short Tandem Repeats on a set of WGS Illumina samples.
+TYpeSTeR can be used to find, filter and genotype Y chromosome Short Tandem Repeats (Y-STRs) on a set of WGS Illumina samples.
 
-It depends on `TRF` in order to get the putative Y STR regions in the Y chromosome reference. `TRF` is available through conda `conda install -c bioconda trf`, ([Benson, 1999](https://github.com/Benson-Genomics-Lab/TRF)).
+You can simply run the script with:
 
-Whereas to genotype the samples in the newly found regions it depends on [HipSTR](https://hipstr-tool.github.io/HipSTR/) ([Willems et al, 2017](https://www.nature.com/articles/nmeth.4267)). Which you can install following the [installation instructions](https://github.com/HipSTR-Tool/HipSTR#installation).
+```
+./typester.sh -r ref_Y.fa -s samples.txt -t /usr/bin/HipSTR -e regions_exclude.bed
+```
 
 
 In order to run TYpeSTeR you need:
-1. the Y chromosome reference in fasta format (`-r`). The reference must have been indexed with `samtools faidx $reference` for HipSTR to work!
+1. the Y chromosome reference in fasta format (`-r`). The reference must have been indexed with `samtools faidx $reference` for HipSTR to work.
 2. a file with the paths to your samples bam files, one per line (`-s`). The script will work as long as the Y reference sequence ID can be found in the BAM headers. You can add the paths in a single file for example like this: `find *Y.bam > Y_bams.txt`
-3. the path to HipSTR executable file (`-t`). The program assumes it's `HipSTR` but you may specify the full path if it's not in $PATH.
+3. the path to HipSTR executable file (`-t`). The program assumes it's `HipSTR` but you may specify the full path if it's not in `$PATH`.
 4. (**optional**) a bed file of regions to exclude (`-e`), such as Pseudo Autosomal Regions (this step requires bedtools)
 5. (**optional**) a name for the output files of your analysis, the default is `Y_STRs`
 6. Maximum motif length (`-m`), default to 6
 7. Maximum STR length (`-M`), default to 100
 
-Then you can run the script with:
-
-`./typester.sh -r ref_Y.fa -s samples.txt -t /usr/bin/HipSTR -e regions_exclude.bed`
 
 The script will first use `TRF` with these parameters:
 `Match=2`, `Mismatch=5`, `Delta=7`, `PM=80`, `PI=10`, `MinScore=80` (higher than the reccomended 50), `MaxPeriod=6` (can be changed with `-m`).
@@ -56,15 +73,26 @@ Run `./typester.sh -h` to get additional details on usage.
 
 ### 3. Analyze results
 
-**TODO**
+After you obtain the VCF and the TRF regions you can explore the results with the R script:
+
+```
+Rscript scripts/plot_STR_vcf.R -r $regions -t $trf -i $vcf -d $taxonomy
+```
+
+You will need to input the three output of TYpeSTeR: `-r` filtered regions, `-t` trf output and `-i` the VCF. Further, you have to input a file with taxonomic division. This file has to have two column: sample and taxon and the sample code must be the same as found in the VCF file. Check `Rscript scripts/plot_STR_vcf.R -h` for usage.
+
+The script will output three pdf files in the `plots` directory: one plot will be the distribution of the motif size and the location across the reference, an exploratory plot of the VCF and the heatmap of each alleles length of the filtered STR regions.
+
 
 ### 4. Detect homology between STRs (optional)
 
-In case you have multiple y chromosomes which are more or less closely related you can use the script in `scripts/find_homology.sh` to look for putative homology between them.
+In case you have multiple y chromosomes which are more or less closely related you can use the script in `scripts/find_homology.sh` to look for putative homology between their Y-STRs.
 
 This script is based on the same `TRF` command as before and you can use the same flags `-m -M -e` exactly as in `typester.sh` to filter results. You can use this command with how many references you like as in:
 
-`find_homology.sh species_a_Y.fa [...] species_n_Y.fa`
+```
+find_homology.sh species_a_Y.fa [...] species_n_Y.fa
+```
 
 The script will produce three files:
 1. `all_Y_strs.fa`: the fasta files of the filtered STRs found in your references. The sequences will be named as filename+an increasing integer based on their postion (i.e. given an input called Hsap_Y.fa the regions will be named Hsap_Y_1,2...n). Further, each sequence will have 200 bp additional base paires in the flanking regions (you can change this parameter with `-f`).
@@ -81,11 +109,12 @@ Finally, you might visualize the blast results with:
 
 `Rscript scripts/comparative_STR.R`
 
-This will produce a pdf named `blast_Y_STRs.pdf` with a pairwise comparison of blast results of all the references analyzed. Check `Rscript scripts/comparative_STR.R -h` for usage.
+This will produce a pdf named `plots/blast_Y_STRs.pdf` with a pairwise comparison of blast results of all the references analyzed. Check `Rscript scripts/comparative_STR.R -h` for usage.
 
 # TODOs
 
+* add test data and output
+* hipstr installation (docker?)
 * discuss if adding snakemake pipeline or useless, I think it's kind of useless
 * stutter model option????? *Depending on your project you may decide which kind of stutter model to use, a nice guide can be found [here](https://hipstr-tool.github.io/HipSTR/#in-depth-usage). In this case we will use the default stutter model (`--def-stutter-model`) as our samples are from different sequencing projects and have different coverages.*
-* add scripts to viz vcf and regions
-* nicer automatic color palette + smarter height width plots
+* output filtered haplotypes (in which format?)

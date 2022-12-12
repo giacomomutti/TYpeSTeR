@@ -67,6 +67,8 @@ multi_df <- blast_str %>%
 
 # these are the multicopy str, we recover them in human except YCAIIa and b!!
 
+dir.create("plots", showWarnings = FALSE)
+
 plot_blast <- blast_str %>% 
   ggplot(aes(pident, query_cov, color=Multicopy, alpha=Homologous)) +
   geom_point() +
@@ -80,4 +82,4 @@ plot_blast <- blast_str %>%
         text = element_text(family="Helvetica"),
         legend.box="vertical")
 
-ggsave("blast_Y_STRs.pdf", plot_blast, device="pdf", width=size*2, height=size*2)
+ggsave("plots/blast_Y_STRs.pdf", plot_blast, device="pdf", width=size*2, height=size*2)
