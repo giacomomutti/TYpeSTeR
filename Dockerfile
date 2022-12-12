@@ -105,6 +105,6 @@ RUN git clone https://github.com/giacomomutti/TYpeSTeR.git
 RUN cd TYpeSTeR \
     && chmod 775 typester.sh \
     && cd scripts \
-    chmod 775 find_homology.sh
-
+    && chmod 775 find_homology.sh
 ENV PATH /opt/TYpeSTeR:$PATH
+ENV PATH /opt/TYpeSTeR/scripts:$PATH
