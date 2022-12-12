@@ -29,17 +29,19 @@ RUN apt-get -y install build-essential \
 	libatomic-ops-dev \
 	pkg-config \
 	cargo \
-	pigz \
-    	&& apt-get -y clean all \
-    	&& rm -rf /var/cache
+	pigz 
+    	# && apt-get -y clean all \
+    	# && rm -rf /var/cache
 
 # Install system dependencies for the tidyverse R packages
-RUN apt-get install -y \
+RUN apt-get -y install \
     make \
     libcurl4-openssl-dev \
     libssl-dev \
     pandoc \
-    libxml2-dev
+    libxml2-dev \
+    	&& apt-get -y clean all \
+    	&& rm -rf /var/cache
 
 # Install R
 # download a version of R and build from source
