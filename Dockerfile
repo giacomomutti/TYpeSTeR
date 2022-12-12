@@ -36,6 +36,7 @@ RUN apt-get -y install build-essential \
 # Install system dependencies for the tidyverse R packages
 RUN apt-get install -y \
     make \
+    libcurl3 \
     libcurl4-openssl-dev \
     libssl-dev \
     pandoc \
