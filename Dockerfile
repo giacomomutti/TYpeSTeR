@@ -33,6 +33,9 @@ RUN apt-get -y install build-essential \
     	&& apt-get -y clean all \
     	&& rm -rf /var/cache
 
+RUN ln -s /usr/bin/python3 /usr/bin/python
+
+
 # # Install system dependencies for the tidyverse R packages
 # RUN apt-get install -y \
 #     make \
@@ -64,11 +67,12 @@ RUN wget https://github.com/samtools/samtools/releases/download/1.16.1/samtools-
 #no need to env path, because of make install - should be sufficient
 
 # install bedtools
-RUN  wget https://github.com/arq5x/bedtools2/releases/download/v2.29.1/bedtools-2.29.1.tar.gz \
-	&& tar -zxvf bedtools-2.29.1.tar.gz \
-	&& cd bedtools2 \
-	&& make 
-ENV PATH /opt/bedtools2/bin:$PATH
+RUN mkdir -p bedtools \
+	&& cd bedtools \
+	&& wget https://github.com/arq5x/bedtools2/releases/download/v2.30.0/bedtools.static.binary \
+	&& mv bedtools.static.binary bedtools \
+	&& chmod a+x bedtools
+ENV PATH /opt/bedtools:$PATH
 
 
 ##install TRF
