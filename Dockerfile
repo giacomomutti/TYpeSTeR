@@ -44,9 +44,6 @@ RUN apt-get install -y \
     	&& apt-get -y clean all \
     	&& rm -rf /var/cache
 
-RUN apt-get install -y gdebi-core
-
-
 # Install R
 # download a version of R and build from source
 RUN wget https://cdn.rstudio.com/r/ubuntu-1604/pkgs/r-${R_VERSION}_1_amd64.deb
