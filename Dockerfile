@@ -7,7 +7,6 @@ LABEL about.license="GPLv3"
 
 ARG DEBIAN_FRONTEND=noninteractive
 #install basic libraries and python
-
 WORKDIR /opt
 
 RUN apt-get update
@@ -52,8 +51,7 @@ RUN cd HipSTR \
 
 ENV PATH /opt/HipSTR:$PATH
 
-
-##clone repo with commands required to run the entire genotyping + custom python script
+##clone repo with commands required to run the entire genotyping + custom python script 
 RUN git clone https://github.com/giacomomutti/TYpeSTeR.git
 RUN cd TYpeSTeR \
     && chmod 775 typester.sh
