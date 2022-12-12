@@ -104,6 +104,7 @@ ENV PATH /opt/HipSTR:$PATH
 RUN git clone https://github.com/giacomomutti/TYpeSTeR.git
 RUN cd TYpeSTeR \
     && chmod 775 typester.sh \
-    && chmod 775 scripts/find_homology.sh
+    && cd scripts \
+    chmod 775 find_homology.sh
 
 ENV PATH /opt/TYpeSTeR:$PATH
