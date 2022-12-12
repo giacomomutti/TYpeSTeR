@@ -74,6 +74,13 @@ RUN mkdir -p bedtools \
 	&& chmod a+x bedtools
 ENV PATH /opt/bedtools:$PATH
 
+# Install blast+ tool
+
+RUN wget https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/ncbi-blast-2.13.0+-x64-linux.tar.gz \
+	&& tar xvfz ncbi-blast-2.13.0+-x64-linux.tar.gz \
+	&& rm ncbi-blast-2.13.0+-x64-linux.tar.gz
+ENV PATH /opt/ncbi-blast-2.13.0+:$PATH
+
 
 ##install TRF
 RUN git clone https://github.com/Benson-Genomics-Lab/TRF.git
