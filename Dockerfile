@@ -79,7 +79,7 @@ ENV PATH /opt/bedtools:$PATH
 RUN wget https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/ncbi-blast-2.13.0+-x64-linux.tar.gz \
 	&& tar xvfz ncbi-blast-2.13.0+-x64-linux.tar.gz \
 	&& rm ncbi-blast-2.13.0+-x64-linux.tar.gz
-ENV PATH /opt/ncbi-blast-2.13.0+:$PATH
+ENV PATH /opt/ncbi-blast-2.13.0+/bin:$PATH
 
 
 ##install TRF
