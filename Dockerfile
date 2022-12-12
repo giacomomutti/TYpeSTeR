@@ -103,6 +103,7 @@ ENV PATH /opt/HipSTR:$PATH
 ##clone repo with commands required to run the entire genotyping + custom python script 
 RUN git clone https://github.com/giacomomutti/TYpeSTeR.git
 RUN cd TYpeSTeR \
-    && chmod 775 typester.sh
+    && chmod 775 typester.sh \
+    && chmod 775 scripts/find_homology.sh
 
 ENV PATH /opt/TYpeSTeR:$PATH
