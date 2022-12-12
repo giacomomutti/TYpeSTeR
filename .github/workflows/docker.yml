@@ -22,4 +22,4 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: raveancic/TYpeSTeR:latest
+          tags: raveancic/typester:latest
