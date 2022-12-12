@@ -36,7 +36,6 @@ RUN apt-get -y install build-essential \
 # Install system dependencies for the tidyverse R packages
 RUN apt-get install -y \
     make \
-    libcurl3 \
     libcurl4-openssl-dev \
     libssl-dev \
     pandoc \
@@ -45,10 +44,10 @@ RUN apt-get install -y \
     	&& apt-get -y clean all \
     	&& rm -rf /var/cache
 
-# Install R
-# download a version of R and build from source
-RUN wget https://cdn.rstudio.com/r/ubuntu-1604/pkgs/r-${R_VERSION}_1_amd64.deb
-RUN gdebi r-${R_VERSION}_1_amd64.deb
+# # Install R
+# # download a version of R and build from source
+# RUN wget https://cdn.rstudio.com/r/ubuntu-1604/pkgs/r-${R_VERSION}_1_amd64.deb
+# RUN gdebi r-${R_VERSION}_1_amd64.deb
 
 
 # Install R packages
