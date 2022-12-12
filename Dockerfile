@@ -34,19 +34,22 @@ RUN apt-get -y install build-essential \
     	# && rm -rf /var/cache
 
 # Install system dependencies for the tidyverse R packages
-RUN apt-get -y install \
+RUN apt-get install -y \
     make \
     libcurl4-openssl-dev \
     libssl-dev \
     pandoc \
     libxml2-dev \
+    gdebi-core \
     	&& apt-get -y clean all \
     	&& rm -rf /var/cache
+
+RUN apt-get install -y gdebi-core
+
 
 # Install R
 # download a version of R and build from source
 RUN wget https://cdn.rstudio.com/r/ubuntu-1604/pkgs/r-${R_VERSION}_1_amd64.deb
-RUN apt-get install -y gdebi-core
 RUN gdebi r-${R_VERSION}_1_amd64.deb
 
 
