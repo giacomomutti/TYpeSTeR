@@ -6,6 +6,8 @@ LABEL about.home="https://github.com/giacomomutti/TYpeSTeR.git"
 LABEL about.license="GPLv3"
 
 ARG DEBIAN_FRONTEND=noninteractive
+ARG R_VERSION=3.5.2
+
 #install basic libraries and python
 WORKDIR /opt
 
@@ -31,8 +33,43 @@ RUN apt-get -y install build-essential \
     	&& apt-get -y clean all \
     	&& rm -rf /var/cache
 
-##install TRF
+# Install system dependencies for the tidyverse R packages
+RUN apt-get install -y \
+    make \
+    libcurl4-openssl-dev \
+    libssl-dev \
+    pandoc \
+    libxml2-dev
 
+# Install R
+# download a version of R and build from source
+RUN wget https://cdn.rstudio.com/r/ubuntu-1604/pkgs/r-${R_VERSION}_1_amd64.deb
+RUN apt-get install -y gdebi-core
+RUN gdebi r-${R_VERSION}_1_amd64.deb
+
+
+# Install R packages
+#  RUN R -e "install.packages(c('methods', 'jsonlite', 'tseries'), dependencies=TRUE, repos='http://cran.rstudio.com/')"
+
+# install samtools
+RUN wget https://github.com/samtools/samtools/releases/download/1.16.1/samtools-1.16.1.tar.bz2 \
+	&& tar -jxvf samtools-1.16.1.tar.bz2 \
+	&& rm samtools-1.16.1.tar.bz2 \
+	&& cd samtools-1.16.1 \
+	&& ./configure \
+	&& make \
+	&& make install
+#no need to env path, because of make install - should be sufficient
+
+# install bedtools
+RUN  wget https://github.com/arq5x/bedtools2/releases/download/v2.29.1/bedtools-2.29.1.tar.gz \
+	&& tar -zxvf bedtools-2.29.1.tar.gz \
+	&& cd bedtools2 \
+	&& make 
+ENV PATH /opt/bedtools2/bin:$PATH
+
+
+##install TRF
 RUN git clone https://github.com/Benson-Genomics-Lab/TRF.git
 RUN cd TRF \
     && mkdir build \
@@ -40,7 +77,6 @@ RUN cd TRF \
     && ../configure \
     && make 
 
-#no need to env path, because of make install - should be sufficient
 ENV PATH /opt/TRF/build/src:$PATH
 
 ##install HipSTR
