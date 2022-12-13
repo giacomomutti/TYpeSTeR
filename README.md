@@ -45,7 +45,7 @@ Flag explanation:
 
 2. (`-s`) a txt file with the paths to the bam files, one per line. The script will work as long as the Y reference sequence ID can be found in the BAM headers. You can add the paths in a single file for example like this: `find *Y.bam > Y_bams.txt`
 
-3. (`-t`) the path to HipSTR executable file. The program assumes it's `HipSTR` but you may specify the full path if it's not in `$PATH`.
+3. (**optional**) (`-t`) the path to HipSTR executable file. The program assumes it's `HipSTR` but you may specify the full path if it's not in `$PATH`.
 
 4. (**optional**) (`-e`) a bed file of regions to exclude, such as Pseudo Autosomal Regions. 
 
@@ -119,7 +119,7 @@ singularity pull docker://raveancic/typester:latest
 Bind and mount paths of the files required by the scripts (sample.txt and region.bed need to be in the same folder in which you are executing this command) and run the container with exec
 
 ```
-singularity exec --bind $PATH_REF_DIR,$PATH_BAM_DIR typester_latest.sif typester.sh -r ref_Y.fa -s samples.txt -t /opt/HipSTR -e regions_exclude.bed
+singularity exec --bind $PATH_REF_DIR,$PATH_BAM_DIR typester_latest.sif typester.sh -r ref_Y.fa -s samples.txt -e regions_exclude.bed
 ```
 
 to run the homology script
