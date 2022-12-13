@@ -24,7 +24,6 @@ Other dependencies not in conda:
 
 * `blastn` - for [installation](https://blast.ncbi.nlm.nih.gov/Blast.cgi?PAGE_TYPE=BlastDocs&DOC_TYPE=Download)
 
-
 ### 1. Usage of the main script
 
 Clone the github repository:
@@ -32,8 +31,8 @@ Clone the github repository:
 ```
 git clone https://github.com/giacomomutti/TYpeSTeR.git
 cd TYpeSTeR
-
 ```
+
 Run the script:
 
 ```
@@ -56,14 +55,12 @@ Flag explanation:
 
 7. (`-M`) Maximum STR length, default to 100
 
-
 The script will first use `TRF` with these parameters:
 `Match=2`, `Mismatch=5`, `Delta=7`, `PM=80`, `PI=10`, `MinScore=80` (higher than the reccomended 50), `MaxPeriod=6` (can be changed with `-m`).
 
 Then it will filter these regions removing dinucleotides and repeats with motif larger than ` -m` (default: 6). Further, as HipSTR does not genotype motif longer than 100bp by default, repeats longer then that will be filtered. You can modify this parameter by setting the maximum length flag `-M`. If you are only interested in identifying the putative STRs you could use the flag `-n` to skip genotyping without providing any sample file `-s`.
 
 The HipSTR maximum flanking indel parameter (`--max-flank-indel`) is set to 1 as it can be eventually filtered downstream and you might be genotyping not so closely related species. Also, the `--min-reads` parameter is the same as your number of samples. This is a very relaxed filtering but again, it's better to eventually filter results downstream.
-
 
 `typester.sh` will output:
 
@@ -107,11 +104,9 @@ Finally, you might visualize the blast results with:
 
 This will produce a pdf named `plots/blast_Y_STRs.pdf` with a pairwise comparison of blast results of all the references analyzed. Check `Rscript scripts/comparative_STR.R -h` for usage.
 
-
 ### Alternative usage with docker file
 
-
-We have also created a container in [Dockerhub](https://hub.docker.com/) for ease the use of `TYpeSTeR` without having the above dependencies [link](https://hub.docker.com/repository/docker/raveancic/typester). (e.g for usage on hpc cluster)
+We have also created a [container](https://hub.docker.com/repository/docker/raveancic/typester) in [Dockerhub](https://hub.docker.com/) for ease the use of `TYpeSTeR` without having the above dependencies. (e.g for usage on hpc cluster)
 
 The only dependency here is Singularity - for [installation](https://docs.sylabs.io/guides/3.0/user-guide/installation.html)
 
@@ -135,7 +130,6 @@ singularity exec --bind $PATH_OUTPUT_DIR typester_latest.sif find_homology.sh sp
 
 Thanks to [Davide Bolognini](https://github.com/davidebolo1993) for the kind support.
 
-
 ### 4. Analyze results
 
 After you obtain the VCF and the TRF regions you can explore the results with the [R script](https://github.com/giacomomutti/TYpeSTeR/tree/master/scripts):
@@ -146,7 +140,6 @@ Dependent packages:
 library(ggplot)
 
 library()
-
 ```
 
 
