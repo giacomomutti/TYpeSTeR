@@ -2,7 +2,7 @@
 
 TYpeSTeR can be used to find, filter and genotype Y chromosome Short Tandem Repeats (Y-STRs) on a set of WGS Illumina samples.
 
-This workflow is meant to run with aligned files, for align the files go to the dedicated [section](### Map samples (optional - if starting with FASTQ))
+This workflow is meant to run with aligned files, for align the files go to the dedicated [section](# Map samples (optional - if starting with FASTQ))
 
 ### Requirements and dependencies
 
@@ -152,7 +152,7 @@ You will need to input the three output of TYpeSTeR: `-r` filtered regions, `-t`
 The script will output three pdf files in the `plots` directory: one plot will be the distribution of the motif size and the location across the reference, an exploratory plot of the VCF and the heatmap of each alleles length of the filtered STR regions.
 
 
-### Map samples (optional - if starting with FASTQ)
+# Map samples (optional - if starting with FASTQ)
 
 The dependencies are:
 * snakemake
